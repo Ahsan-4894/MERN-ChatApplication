@@ -17,6 +17,7 @@ import {
   Person as PersonIcon,
 } from "@mui/icons-material";
 import moment from "moment";
+import { DoughnutChart, LineChart } from "../../components/specifics/Charts";
 
 const Dashboard = () => {
   const AppBar = (
@@ -51,31 +52,44 @@ const Dashboard = () => {
   );
 
   const Widget = ({ title, value, Icon }) => (
-    <Paper elevation={3} sx={{
-      width: "25%",
-      height:"17rem",
-      position: "relative",
-    }}>
-      <Stack sx={{height:"100%", width:"100%"}} direction={"column"}>
-        <Stack sx={{height:"50%", width:"100%"}} textAlign={"center"} justifyContent={"center"}>
+    <Paper
+      elevation={3}
+      sx={{
+        width: "25%",
+        height: "17rem",
+        position: "relative",
+      }}
+    >
+      <Stack sx={{ height: "100%", width: "100%" }} direction={"column"}>
+        <Stack
+          sx={{ height: "50%", width: "100%" }}
+          textAlign={"center"}
+          justifyContent={"center"}
+        >
           <Typography>{value}</Typography>
-          <Typography sx={{
-            position:"absolute",
-            border:"4px solid black",
-            borderRadius:"50%",
-            width:"7rem",
-            height:"7rem",
-            left:"6.5rem"
-          }}></Typography>
+          <Typography
+            sx={{
+              position: "absolute",
+              border: "4px solid black",
+              borderRadius: "50%",
+              width: "7rem",
+              height: "7rem",
+              left: "6.5rem",
+            }}
+          ></Typography>
         </Stack>
-        
-        <Stack spacing={'.5rem'} textAlign={'center'} sx={{height:"50%", width:"100%"}} direction={"row"} justifyContent={"center"} alignItems={"center"}>
-          <IconButton>
-            {Icon}
-          </IconButton>
+
+        <Stack
+          spacing={".5rem"}
+          textAlign={"center"}
+          sx={{ height: "50%", width: "100%" }}
+          direction={"row"}
+          justifyContent={"center"}
+          alignItems={"center"}
+        >
+          <IconButton>{Icon}</IconButton>
           <Typography variant="h6">{title}</Typography>
         </Stack>
-      
       </Stack>
     </Paper>
   );
@@ -92,9 +106,21 @@ const Dashboard = () => {
         marginLeft: "2rem",
       }}
     >
-      <Widget title={"Users"} value={100} Icon={<PersonIcon sx={{color:"#1976d2"}}/>} />
-      <Widget title={"Chats"} value={200} Icon={<GroupIcon sx={{color:"#1976d2"}}/>} />
-      <Widget title={"Messages"} value={300} Icon={<MessageIcon sx={{color:"#1976d2"}}/>} />
+      <Widget
+        title={"Users"}
+        value={100}
+        Icon={<PersonIcon sx={{ color: "#1976d2" }} />}
+      />
+      <Widget
+        title={"Chats"}
+        value={200}
+        Icon={<GroupIcon sx={{ color: "#1976d2" }} />}
+      />
+      <Widget
+        title={"Messages"}
+        value={300}
+        Icon={<MessageIcon sx={{ color: "#1976d2" }} />}
+      />
     </Stack>
   );
 
@@ -114,7 +140,8 @@ const Dashboard = () => {
             }}
           >
             <Typography>Last 7 Day Messages</Typography>
-            {"CHAT"}
+
+            <LineChart dataArr={[0, 0.1, 0.25, 0.1]} />
           </Paper>
         </Stack>
 
@@ -130,12 +157,21 @@ const Dashboard = () => {
               top: "2rem",
             }}
           >
-            {"Dounut Chart"}
+            <Stack sx={{
+              height:"100%",
+              justifyContent:"center",
+              alignItems:"center"
+            }}>
+                
+            <DoughnutChart
+              labels={["SingleChats", "Group Chats"]}
+              dataArr={[10, 20]}
+            />
             <Stack
               direction={"row"}
               sx={{
-                position: "absolute",
-                left: "30rem",
+                position: "relative",
+                bottom:"13rem",
                 alignItems: "center",
               }}
             >
@@ -146,6 +182,7 @@ const Dashboard = () => {
               <IconButton color="primary">
                 <PersonIcon />
               </IconButton>
+            </Stack>
             </Stack>
           </Paper>
         </Stack>

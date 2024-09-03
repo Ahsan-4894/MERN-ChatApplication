@@ -14,9 +14,9 @@ const AdminLogin = () => {
     
     const handleLogin = ()=>{
         toast.success("Login Successfully!")
-        setTimeout((
-          redirectToDashBoard()
-        ), 4000)
+        setTimeout(()=>{
+          redirectToDashBoard();
+        }, 4000);
     }
     const redirectToDashBoard = ()=>navigate("/admin/dashboard")
   return (

@@ -1,7 +1,7 @@
 import { Box, Typography } from "@mui/material";
 import React, { memo } from "react";
 import moment from "moment";
-import { FileFormat } from "../../lib/features.js";
+import { FileFormat, TransformImage } from "../../lib/features.js";
 import RenderAttachments from "./RenderAttachments.jsx";
 
 const MessageComponent = ({ message, user }) => {
@@ -12,36 +12,48 @@ const MessageComponent = ({ message, user }) => {
     <div
       style={{
         alignSelf: isSameSender ? "flex-end" : "flex-start",
-        backgroundColor: isSameSender ? "white" : "#1976d3",
-        color: isSameSender ? "black" : "white",
-        width: "15rem",
-        marginTop: "1rem",
+        backgroundColor: isSameSender ? "white" : "white",
+        color: isSameSender ? "black" : "#012169",
+        width: "25rem",
+        marginTop: "1.2rem",
         padding: ".2rem",
-        marginLeft: ".4rem",
+        marginLeft: ".5rem",
+        borderRadius: ".1rem",
+        boxShadow: "0px 4px 12px rgba(0, 0, 0, 0.25)",
       }}
     >
       {!isSameSender && (
-        <Typography variant="caption" color={"white"} fontWeight={"500"}>
+        <Typography variant="body1" color={"002D62"} fontWeight={"500"}>
           {sender.name}
         </Typography>
       )}
-      {content && <Typography>{content}</Typography>}
+      {content && (
+        <div
+          style={{
+            wordWrap: "break-word", // Ensure words break to the next line if they exceed the width
+            overflowWrap: "break-word", // Alternative to wordWrap for wider browser support
+            boxSizing: "border-box", // Ensure padding is included in the box size calculation
+          }}
+        >
+          {content && <Typography>{content}</Typography>}
+        </div>
+      )}
 
       {/* Attachments */}
-      
-      {attachments.length > 0 &&
+
+      {attachments?.length > 0 &&
         attachments.map((attachment, index) => {
           const url = attachment.url;
           const file = FileFormat(url);
           return (
-            <Box key={index}>
-              <a
-                href={url}
-                target="_blank"
-                download
-                style={{ color: "black" }}
-              >
-                {RenderAttachments(file,url)}
+            <Box
+              key={index}
+              sx={{
+                maxWidth: "100%",
+              }}
+            >
+              <a href={url} target="_blank" download style={{ color: "black" }}>
+                {RenderAttachments(file, url)}
               </a>
             </Box>
           );

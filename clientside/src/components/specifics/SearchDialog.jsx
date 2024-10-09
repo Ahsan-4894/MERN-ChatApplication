@@ -1,37 +1,66 @@
-import React, { useState } from "react";
 import { useInputValidation } from "6pp";
-import {sampleUsersData} from '../../constants/sampleChatData.js'
+import React, { useEffect, useState } from "react";
+import { sampleUsersData } from "../../constants/sampleChatData.js";
 
+import { Search as SearchIcon } from "@mui/icons-material";
 import {
   Dialog,
   DialogTitle,
   InputAdornment,
-  TextField,
   List,
-  ListItem,
-  Typography,
-  Button
+  TextField,
 } from "@mui/material";
-import { Search as SearchIcon } from "@mui/icons-material";
+import { useDispatch, useSelector } from "react-redux";
+import { useAsyncMutation } from "../../hooks/hook.jsx";
+import {
+  useLazySearchUsersQuery,
+  useSendFriendRequestMutation,
+} from "../../redux/api/api.js";
+import { setIsSearch } from "../../redux/reducers/misc.js";
 import UserItem from "./UserItem";
+
 const SearchDialog = () => {
+  const dispatch = useDispatch();
+
   const [users, setUsers] = useState(sampleUsersData);
   const [selectedUser, setSelectedUsers] = useState([]);
-  const isLoadingFreindReq = false;
+
   const search = useInputValidation("");
-  
-  const addFriendReqHandler = (id)   => {
-    setSelectedUsers((prev) =>
-      prev.includes(id) ? prev.filter((currId) => currId!==id) : [...prev, id]
-    );
+
+  const { isSearch } = useSelector((state) => state.misc);
+
+  const [searchUser] = useLazySearchUsersQuery();
+  const [sendFriendRequest, isLoadingFreindReq] = useAsyncMutation(
+    useSendFriendRequestMutation
+  );
+
+  const closeSearchHandler = () => dispatch(setIsSearch(false));
+
+  const handleSentFriendRequestHandler = async (id) => {
+    await sendFriendRequest("Sending friend Request...", { receiverId: id });
   };
-  console.log(selectedUser)
-  const handleSentFriendRequestHandler = ()=>{}
+
+  useEffect(() => {
+    const timeOutId = setTimeout(async () => {
+      try {
+        const response = await searchUser(search.value);
+        setUsers(response?.data?.message);
+      } catch (error) {
+        console.log(error);
+      }
+    }, 1000);
+    return () => clearTimeout(timeOutId);
+  }, [search.value]);
+
   return (
-    <Dialog open sx={{
-      overflow:"auto"
-    }}>
-      <div className="flex flex-col p-2 w-[30rem]">
+    <Dialog
+      open={isSearch}
+      onClose={closeSearchHandler}
+      sx={{
+        overflow: "auto",
+      }}
+    >
+      <div className="flex flex-col p-2 w-[30rem] overflow-auto overflow-y-auto">
         <DialogTitle textAlign={"center"}>Find People</DialogTitle>
         <TextField
           value={search.value}
@@ -51,15 +80,12 @@ const SearchDialog = () => {
             <UserItem
               user={data}
               key={data._id}
-              handler={addFriendReqHandler}
+              handler={handleSentFriendRequestHandler}
               isHandlerLoading={isLoadingFreindReq}
-              isAdded = {(selectedUser.includes(data._id) ? true : false)}
+              isAdded={selectedUser.includes(data._id) ? true : false}
             />
           ))}
         </List>
-        <Button variant="contained" onClick={handleSentFriendRequestHandler}>
-          Sent Friend Request
-        </Button>
       </div>
     </Dialog>
   );

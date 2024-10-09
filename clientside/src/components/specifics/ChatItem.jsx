@@ -1,5 +1,5 @@
 import { Box, styled } from "@mui/material";
-import React, {memo} from "react";
+import React, { memo } from "react";
 import { Link } from "react-router-dom";
 import AvatarCard from "./AvatarCard";
 
@@ -22,10 +22,10 @@ const ChatItem = ({
       >
         <div
           className={`duration-300 transition rounded-lg shadow-blue-50 border border-blue-100 flex items-center mt-2 p-2 ${
-            sameSender? `bg-black text-white` : `border shadow-xl  text-black`
-          } relative` }
+            sameSender ? `bg-black text-white` : `border shadow-xl  text-black`
+          } relative`}
         >
-          <AvatarCard avatar={avatar}/>
+          <AvatarCard avatar={avatar} />
           <div className="flex flex-col">
             <h2 className="font-bold">{name}</h2>
             {newMessageAlert && <h3>{newMessageAlert.count} New Messages</h3>}

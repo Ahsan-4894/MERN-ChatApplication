@@ -1,10 +1,10 @@
+import { Avatar, AvatarGroup } from '@mui/material'
 import React from 'react'
-import {Avatar, AvatarGroup} from '@mui/material'
 import { TransformImage } from '../../lib/features'
 
 const AvatarCard = ({avatar=[], max=4}) => {
   return (
-    <div className='flex flex-col '>
+    <div className='flex flex-col justify-center items-center'>
         <AvatarGroup max={max}>
             <div className='h-[4rem] w-[3rem]'>
             {
